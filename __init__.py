@@ -5,6 +5,7 @@ from adapt.intent import IntentBuilder
 from mycroft.skills.context import removes_context
 from mycroft.util import LOG
 
+LOGSTR = '********************====================########## '
 
 class EasyShopping(MycroftSkill):
     # Edit in main class: class EasyShopping(MycroftSkill):
@@ -42,11 +43,19 @@ class EasyShopping(MycroftSkill):
 #         str = 'yes, I find ' +  category_label + ' in front of you'
 #         self.speak(str)
         
+    @intent_handler('is.there.any.goods.intent')
 
+    else:
+        ...
 
     @intent_handler('is.there.any.goods.intent')
     def handle_is_there_any_goods(self, message):
+        if self.img_multi == '':
+        # if self.img_multi == '', 
+        # then it means that user hasn't invoked intent(handle_view_goods)
+            self.handle_no_context1(message)
         # in real application, label_str and loc_list will return from CV API
+        else:
         label_list = [['milk', 'drink', 'bottle'], ['milk', 'drink', 'bottle']]
         loc_list = ['left top', 'right top']
 
