@@ -26,6 +26,35 @@ class EasyShopping(MycroftSkill):
         category_label = message.data.get('category')
         str = 'yes, I find ' +  category_label + ' in front of you'
         self.speak(str)
+        
+
+
+    @intent_handler('is.there.any.goods.intent')
+    def handle_is_there_any_goods(self, message):
+        # in real application, label_str and loc_list will return from CV API
+        label_list = [['milk', 'drink', 'bottle'], ['milk', 'drink', 'bottle']]
+        loc_list = ['left top', 'right top']
+
+        category_label = message.data.get('category')
+        detected = 0
+
+        for i in range(len(label_list)):
+            label_str = generate_str(label_list[i])
+            label_str = label_str.lower()
+
+            if category_label is not None:
+                if category_label in label_str:
+                    self.speak_dialog('yes.goods',
+                                {'category': category_label,
+                                'location': loc_list[i]})
+                    detected = 1
+                    break
+            else:
+                continue
+
+        if detected == 0:
+            self.speak_dialog('no.goods',
+            {'category': category_label})
 
     @intent_handler(IntentBuilder('ViewItemInHand').require('ViewItemInHandKeyWord'))
     def handle_view_item_in_hand(self, message):
