@@ -18,7 +18,19 @@ class EasyShopping(MycroftSkill):
         self.img_multi = ''
         self.img_hand = ''
         self.log.info(LOGSTR + "_init_ EasyShoppingSkill")
-
+    
+# firstly create do.you.want.to.take.a.photo.dialog 
+    def handle_no_context1(self, message):
+        self.speak('Please let me have a look at what\'s in front of you first.')
+        # add prompts
+        take_photo = self.ask_yesno('do.you.want.to.take.a.photo') # This calls .dialog file.
+        if take_photo == 'yes':
+            self.handle_view_goods(message)
+        elif take_photo == 'no':
+            self.speak('OK. I won\'t take photo')
+        else:
+            self.speak('I cannot understand what you are saying')
+    
     @intent_file_handler('shopping.easy.intent')
     def handle_shopping_easy(self, message):
         self.speak_dialog('shopping.easy')
@@ -37,16 +49,6 @@ class EasyShopping(MycroftSkill):
 
 
 
-#     @intent_handler('is.there.any.goods.intent')
-#     def handle_is_there_any_goods(self, message):
-#         category_label = message.data.get('category')
-#         str = 'yes, I find ' +  category_label + ' in front of you'
-#         self.speak(str)
-        
-    @intent_handler('is.there.any.goods.intent')
-
-    else:
-        ...
 
     @intent_handler('is.there.any.goods.intent')
     def handle_is_there_any_goods(self, message):
@@ -108,30 +110,43 @@ class EasyShopping(MycroftSkill):
         # speak dialog
         self.speak_dialog('item.category', {'category': self.category_str})
 
+    def handle_ask_item_detail(self, detail, detail_str):
+        if detail_str == '':
+            # add expect_response
+            self.speak_dialog('cannot.get', {'detail': detail}, expect_response=True) # This calls .dialog file.
+        else:
+            dialog_str = 'item.' + detail
+            # add expect_response
+            self.speak_dialog(dialog_str, {detail: detail_str}, expect_response=True) # This calls .dialog file.
 
-    @intent_handler(IntentBuilder('AskItemCategory').require('Category').build())
+            
+    @intent_handler(IntentBuilder('AskItemCategory').require('Category').require('getDetailContext').build())
     def handle_ask_item_category(self, message):
-        self.speak('I am talking about the category of the item')
+        self.handle_ask_item_detail('category', self.category_str)
 
-    @intent_handler(IntentBuilder('AskItemColor').require('Color').build())
+    @intent_handler(IntentBuilder('AskItemColor').require('Color').require('getDetailContext').build())
     def handle_ask_item_color(self, message):
-     self.speak('I am talking about the color of the item')
+        self.handle_ask_item_detail('color', self.color_str)
 
-    @intent_handler(IntentBuilder('AskItemBrand').require('Brand').build())
+    @intent_handler(IntentBuilder('AskItemBrand').require('Brand').require('getDetailContext').build())
     def handle_ask_item_brand(self, message):
-        self.speak('I am talking about the brand of the item')
+        self.handle_ask_item_detail('brand', self.brand_str)
 
-    @intent_handler(IntentBuilder('AskItemKw').require('Kw').build())
+    @intent_handler(IntentBuilder('AskItemKw').require('Kw').require('getDetailContext').build())
     def handle_ask_item_keywords(self, message):
-      self.speak('I am talking about the keywords of the item')
+        self.handle_ask_item_detail('keyword', self.kw_str)
 
-    @intent_handler(IntentBuilder('AskItemInfo').require('Info').build())
+    @intent_handler(IntentBuilder('AskItemInfo').require('Info').require('getDetailContext').build())
     def handle_ask_item_complete_info(self, message):
-       self.speak('I am speaking the complete information of the item')
+        if self.color_str == '':
+            self.handle_ask_item_detail('category', self.category_str)
+        else:
+            self.speak_dialog('item.complete.info', {
+                          'category': self.category_str, 'color': self.color_str})
+        self.handle_ask_item_detail('brand', self.brand_str)
+        self.handle_ask_item_detail('keyword', self.kw_str)
 
-    @intent_handler(IntentBuilder('FinishOneItem').require('Finish').build())
-    def handle_finish_current_item(self, message):
-       self.speak('Got you request. Let\'s continue shopping!')
+
     
     
     @intent_handler(IntentBuilder('ViewItemInHand').require('ViewItemInHandKeyWord'))
