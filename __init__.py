@@ -31,7 +31,7 @@ class EasyShopping(MycroftSkill):
 
         # suppose we use camera to take a photo here, 
         # then the function will return an image path
-        self.img_multi = 'Path_To_Image/multi.jpeg'
+        self.img_multi = '/home/ethank/Downloads/milk2.jpeg'
 
         self.speak('I find some goods here, you can ask me whatever goods you want.')
 
@@ -93,7 +93,7 @@ class EasyShopping(MycroftSkill):
     
         # suppose we use camera to take a photo here, 
         # then the function will return an image path
-        self.img_hand = 'Path_To_Image/2.jpeg'
+        self.img_hand = '/home/ethank/Downloads/milk2.jpeg'
 
         # suppose we call CV API here to get the result, 
         # the result will all be list, then we use generate_str() to create string
@@ -142,7 +142,7 @@ class EasyShopping(MycroftSkill):
     
         # suppose we use camera to take a photo here, 
         # then the function will return an image path
-        self.img_hand = 'Path_To_Image/2.jpeg'
+        self.img_hand = '/home/ethank/Downloads/milk2.jpeg'
 
         # suppose we call CV API here to get the result, 
         # the result will all be list, then we use generate_str() to create string
