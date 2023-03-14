@@ -21,11 +21,11 @@ class EasyShopping(MycroftSkill):
       self.speak_dialog('take.photo')
 
 
-    @intent_handler('is.there.any.goods.intent')
-    def handle_is_there_any_goods(self, message):
-        category_label = message.data.get('category')
-        str = 'yes, I find ' +  category_label + ' in front of you'
-        self.speak(str)
+#     @intent_handler('is.there.any.goods.intent')
+#     def handle_is_there_any_goods(self, message):
+#         category_label = message.data.get('category')
+#         str = 'yes, I find ' +  category_label + ' in front of you'
+#         self.speak(str)
         
 
 
@@ -56,10 +56,33 @@ class EasyShopping(MycroftSkill):
             self.speak_dialog('no.goods',
             {'category': category_label})
 
+#     @intent_handler(IntentBuilder('ViewItemInHand').require('ViewItemInHandKeyWord'))
+#     def handle_view_item_in_hand(self, message):
+#         self.speak('Taking a photo now. Please wait a second for me to get the result.')
+#         self.speak('The item is possible to be something. You can ask me any details about the item now, such as brand, color or complete information.')
+
     @intent_handler(IntentBuilder('ViewItemInHand').require('ViewItemInHandKeyWord'))
     def handle_view_item_in_hand(self, message):
-        self.speak('Taking a photo now. Please wait a second for me to get the result.')
-        self.speak('The item is possible to be something. You can ask me any details about the item now, such as brand, color or complete information.')
+        self.speak_dialog('take.photo')
+        self.img_multi = ''
+        self.img_hand = ''
+    
+        # suppose we use camera to take a photo here, 
+        # then the function will return an image path
+        self.img_hand = 'Path_To_Image/2.jpeg'
+
+        # suppose we call CV API here to get the result, 
+        # the result will all be list, then we use generate_str() to create string
+        self.category_str = generate_str(['milk', 'bottle', 'drink'])
+        self.brand_str = generate_str(['Dutch Lady', 'Lady'])
+        self.color_str = generate_str(['white', 'black', 'blue'])
+        self.kw_str = ' '.join(['milk', 'bottle', 'protein', 'pure', 'farm'])
+
+        # set the context
+        self.set_context('getDetailContext')
+
+        # speak dialog
+        self.speak_dialog('item.category', {'category': self.category_str})
 
 
     @intent_handler(IntentBuilder('AskItemCategory').require('Category').build())
