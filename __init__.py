@@ -11,10 +11,15 @@ class EasyShopping(MycroftSkill):
     def handle_shopping_easy(self, message):
         self.speak_dialog('shopping.easy')
     
+#     @intent_handler('view.goods.intent')
+#     def handle_view_goods(self, message):
+#         self.speak('Taking a photo now. Please wait a second for me to get the result.')
+#         self.speak('I find some goods here, you can ask me whatever goods you want.')
+
     @intent_handler('view.goods.intent')
     def handle_view_goods(self, message):
-        self.speak('Taking a photo now. Please wait a second for me to get the result.')
-        self.speak('I find some goods here, you can ask me whatever goods you want.')
+      self.speak_dialog('take.photo')
+
 
     @intent_handler('is.there.any.goods.intent')
     def handle_is_there_any_goods(self, message):
