@@ -163,7 +163,6 @@ class EasyShopping(MycroftSkill):
         # speak dialog
         self.speak_dialog('item.category', {'category': self.category_str})
 
-
     @intent_handler(IntentBuilder('AskItemCategory').require('Category').require('getDetailContext').build())
     def handle_ask_item_category(self, message):
         self.handle_ask_item_detail('category', self.category_str)
@@ -182,8 +181,11 @@ class EasyShopping(MycroftSkill):
 
     @intent_handler(IntentBuilder('AskItemInfo').require('Info').require('getDetailContext').build())
     def handle_ask_item_complete_info(self, message):
-        self.speak_dialog('item.complete.info', {'category': self.category_str})
-        self.handle_ask_item_detail('color', self.color_str)
+        if self.color_str == '':
+            self.handle_ask_item_detail('category', self.category_str)
+        else:
+            self.speak_dialog('item.complete.info', {
+                          'category': self.category_str, 'color': self.color_str})
         self.handle_ask_item_detail('brand', self.brand_str)
         self.handle_ask_item_detail('keyword', self.kw_str)
 
