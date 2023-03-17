@@ -206,22 +206,6 @@ class EasyShopping(MycroftSkill):
     def handle_no_context2(self, message):
         self.speak('Please let me have a look at what\'s in your hand first.')
 
-        
-        
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
- ## Stop before 4       
+           
         
 def create_skill(): return EasyShopping()        
