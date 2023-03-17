@@ -7,7 +7,7 @@ def take_photo():
     img_name = 'cap_img_' + str(time.time()) + '.jpg'
 
     # Change this variable to the path you want to store the image
-    img_path = '/opt/mycroft/skills/easy-shopping-skill/testPhoto/' + img_name
+    img_path = 'home/ethank/mycroft-core/skills/easy-shopping-skill/testPhoto/' + img_name
 
     #<-- Take photo in specific time duration -->
     cout = 0
